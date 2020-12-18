@@ -29,6 +29,8 @@ func SetupRouter() *gin.Engine {
 		&models.Grado{},
 		&models.Alumno{},
 		&models.Docente{},
+		&models.CargaAcademica{},
+		&models.Curso{},
 	)
 
 	r := gin.Default()
@@ -70,6 +72,12 @@ func SetupRouter() *gin.Engine {
 		v1.PUT("/sesiones/:id", app.SesionUpdate)
 		v1.DELETE("/sesiones/:id", app.SesionDelete)
 
+		v1.GET("/curso", app.CursoIndex)
+		v1.POST("/curso", authMiddleWare(), app.CursoCreate)
+		v1.GET("/curso/:id", app.CursoGet)
+		v1.PUT("/curso/:id", app.CursoUpdate)
+		v1.DELETE("/curso/:id", app.CursoDelete)
+
 		v1.GET("/tareas", app.TareaIndex)
 		v1.POST("/tareas", authMiddleWare(), app.TareaCreate)
 		v1.GET("/tareas/:id", app.TareaGet)
@@ -93,6 +101,12 @@ func SetupRouter() *gin.Engine {
 		v1.POST("/alumno", authMiddleWare(), app.AlumnoCreate)
 		v1.PUT("/alumno/:id", app.AlumnoUpdate)
 		v1.DELETE("/alumno/:id", app.AlumnoDelete)
+
+		v1.GET("/carga_academica", app.CargaAcademicaIndex)
+		v1.GET("/carga_academica/:id", app.CargaAcademicaGETID)
+		v1.POST("/carga_academica", authMiddleWare(), app.CargaAcademicaCreate)
+		v1.PUT("/carga_academica/:id", app.CargaAcademicaUpdate)
+		v1.DELETE("/carga_academica/:id", app.CargaAcademicaDelete)
 
 		v1.GET("/docente", app.DocenteIndex)
 		v1.GET("/docente/:id", app.DocenteGETID)
