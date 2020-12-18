@@ -29,6 +29,8 @@ func SetupRouter() *gin.Engine {
 		&models.Grado{},
 		&models.Alumno{},
 		&models.Docente{},
+		&models.Academic_Period{},
+		&models.Academic_Plane{},
 	)
 
 	r := gin.Default()
@@ -99,6 +101,18 @@ func SetupRouter() *gin.Engine {
 		v1.POST("/docente", authMiddleWare(), app.DocenteCreate)
 		v1.PUT("/docente/:id", app.DocenteUpdate)
 		v1.DELETE("/docente/:id", app.DocenteDelete)
+
+		v1.GET("/academicperiod", apis.AcademicPeriodIndex)
+		v1.POST("/academicperiod", authMiddleWare(), apis.AcademicPeriodCreate)
+		v1.GET("/academicperiod/:id", apis.AcademicPeriodGet)
+		v1.PUT("/academicperiod/:id", apis.AcademicPeriodUpdate)
+		v1.DELETE("/academicperiod/:id", apis.AcademicPeriodDelete)
+
+		v1.GET("/academicplan", apis.AcademicPlanIndex)
+		v1.POST("/academicplan", authMiddleWare(), apis.AcademicPlanCreate)
+		v1.GET("/academicplan/:id", apis.AcademicPlanGet)
+		v1.PUT("/academicplan/:id", apis.AcademicPlanUpdate)
+		v1.DELETE("/academicplan/:id", apis.AcademicPlanDelete)
 	}
 
 	return r
