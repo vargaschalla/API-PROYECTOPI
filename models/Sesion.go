@@ -9,5 +9,5 @@ type Sesion struct {
 	Estado   string `json:"estado"`
 	Recurso  []Recurso
 	UnidadID string `gorm:"size:191"`
-	Unidad   Unidad `gorm :"ForeignKey: Sesion"`
+	Unidad   Unidad
 }

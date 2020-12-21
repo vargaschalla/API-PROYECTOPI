@@ -15,8 +15,7 @@ type PlanAcademico struct {
 	Unidad      []Unidad
 	Inscripcion []Inscripcion
 	Personas    []Persona
-	Seccion     Seccion `gorm :"ForeignKey: PlanAcademico"`
-	Periodo     Periodo `gorm :"ForeignKey: PlanAcademico"`
-	Curso       Curso   `gorm :"ForeignKey: PlanAcademico"`
-	Persona     Persona `gorm :"ForeignKey: PlanAcademico"`
+	Seccion     Seccion
+	Periodo     Periodo
+	Persona     Persona
 }

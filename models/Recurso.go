@@ -10,6 +10,6 @@ type Recurso struct {
 	TipoRecursoID string `gorm:"size:191"`
 	SesionID      string `gorm:"size:191"`
 	Trabajo       []Trabajo
-	TipoRecurso   TipoRecurso `gorm :"ForeignKey: Recurso"`
-	Sesion        Sesion      `gorm :"ForeignKey: Recurso"`
+	TipoRecurso   TipoRecurso
+	Sesion        Sesion
 }
