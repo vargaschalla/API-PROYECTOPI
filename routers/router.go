@@ -14,7 +14,7 @@ import (
 
 func SetupRouter() *gin.Engine {
 
-	conn, err := connectDB()
+	conn, err := connectDBmysql()
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 		//return
