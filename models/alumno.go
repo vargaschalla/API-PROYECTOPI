@@ -10,5 +10,6 @@ type Alumno struct {
 	Rol             Rol    `gorm :"ForeignKey: Alumno"`
 	Estado          string `json:"estado"`
 	SesionActividad []SesionActividad
-	CargaAcademica  []CargaAcademica
+
+	CargaAcademica []CargaAcademica
 }
