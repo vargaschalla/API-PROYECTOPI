@@ -8,14 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func NivelIndex(c *gin.Context) {
-	var lis []models.Nivel
-
+func RecursoIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.Recurso{}
 	conn.Find(&lis)
+	conn.Preload("TipoRecurso").Preload("Sesion").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -23,12 +23,12 @@ func NivelIndex(c *gin.Context) {
 
 }
 
-func NivelCreate(c *gin.Context) {
+func RecursoCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.Nivel
+	var d models.Recurso
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -40,14 +40,14 @@ func NivelCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func NivelGet(c *gin.Context) {
+func RecursoGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Nivel
+	var d models.Recurso
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -57,13 +57,13 @@ func NivelGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func NivelUpdate(c *gin.Context) {
+func RecursoUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Nivel
+	var d models.Recurso
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -75,13 +75,13 @@ func NivelUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func NivelDelete(c *gin.Context) {
+func RecursoDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Nivel
+	var d models.Recurso
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

@@ -8,46 +8,27 @@ import (
 	"gorm.io/gorm"
 )
 
-func ModuloIndex(c *gin.Context) {
+func RolPersonaLista(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	lis := []models.Modulo{}
+	lis := []models.RolPersona{}
 	conn.Find(&lis)
-	conn.Preload("Academic_Period").Preload("Academic_Plane").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
+	conn.Preload("Persona").Preload("Rol").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
 	})
-
 }
-
-func ModuloCreate(c *gin.Context) {
-	db, _ := c.Get("db")
-
-	conn := db.(gorm.DB)
-
-	var d models.Modulo
-	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
-	if err := c.BindJSON(&d); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	conn.Create(&d)
-	c.JSON(http.StatusOK, &d)
-}
-
-func ModuloGet(c *gin.Context) {
+func RolPersonaGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Modulo
+	var d models.RolPersona
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -56,14 +37,27 @@ func ModuloGet(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, &d)
 }
+func RolPersonaCreate(c *gin.Context) {
+	var p models.RolPersona
+	db, _ := c.Get("db")
+	conn := db.(gorm.DB)
 
-func ModuloUpdate(c *gin.Context) {
+	if err := c.BindJSON(&p); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+	}
+	conn.Create(&p)
+	c.JSON(http.StatusOK, &p)
+}
+
+func RolPersonaUpdate(c *gin.Context) {
+	var d models.RolPersona
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Modulo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -75,13 +69,13 @@ func ModuloUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func ModuloDelete(c *gin.Context) {
+func RolPersonaDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Modulo
+	var d models.RolPersona
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

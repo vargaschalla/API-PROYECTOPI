@@ -1,13 +1,10 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type Rol struct {
 	gorm.Model
-	Descripcion string `json:"descripcion"`
-	Alumno      []Alumno
-	Docente     []Docente
-	Estado      string `json:"estado"`
+	Nombre     string `json:"nombre"`
+	Estado     string `json:"estado"`
+	RolPersona []RolPersona
 }

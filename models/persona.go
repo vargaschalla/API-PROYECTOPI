@@ -4,17 +4,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type Person struct {
+type Persona struct {
 	gorm.Model
-	Nombre          string `json:"nombre"`
-	Paterno         string `json:"paterno"`
-	Materno         string `json:"materno"`
-	Email           string `json:"email"`
-	Edad            string `json:"edad"`
-	Celular         string `json:"celular"`
-	Fechanacimiento string `json:"fechanacimiento"`
-	//Fechanacimiento time.Time `json:"fechanacimiento"`
-	DNI string `json:"dni"`
-	//DNI    int `json:"dni"`
-	Estado string `json:"estado"`
+	Nombre        string `json:"nombre"`
+	Paterno       string `json:"paterno"`
+	Materno       string `json:"materno"`
+	Correo        string `json:"correo"`
+	Edad          string `json:"edad"`
+	Telefono      string `json:"telefono"`
+	Direccion     string `json:"direccion"`
+	DNI           string `json:"dni"`
+	Estado        string `json:"estado"`
+	RolPersona    []RolPersona
+	Trabajo       []Trabajo
+	PlanAcademico []PlanAcademico
 }

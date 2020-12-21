@@ -9,7 +9,7 @@ import (
 )
 
 func PersonsIndex(c *gin.Context) {
-	var lis []models.Person
+	var lis []models.Persona
 
 	db, _ := c.Get("db")
 
@@ -28,7 +28,7 @@ func PersonsCreate(c *gin.Context) {
 
 	conn := db.(gorm.DB)
 
-	var d models.Person
+	var d models.Persona
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -47,7 +47,7 @@ func PersonsGet(c *gin.Context) {
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Person
+	var d models.Persona
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -63,7 +63,7 @@ func PersonsUpdate(c *gin.Context) {
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Person
+	var d models.Persona
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -81,7 +81,7 @@ func PersonsDelete(c *gin.Context) {
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Person
+	var d models.Persona
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

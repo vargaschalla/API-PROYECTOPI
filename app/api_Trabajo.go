@@ -8,14 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func AlumnoIndex(c *gin.Context) {
+func TrabajoIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	lis := []models.Alumno{}
+	lis := []models.Trabajo{}
 	conn.Find(&lis)
-	conn.Preload("Rol").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
+	conn.Preload("Secuencia").Preload("Persona").Preload("Recurso").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -23,28 +23,13 @@ func AlumnoIndex(c *gin.Context) {
 
 }
 
-func AlumnoGETID(c *gin.Context) {
+func TrabajoCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
-	id := c.Param("id")
-	var d models.Alumno
-	if err := conn.First(&d, id).Error; err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, &d)
 
-}
-
-func AlumnoCreate(c *gin.Context) {
-	db, _ := c.Get("db")
-
-	conn := db.(gorm.DB)
-	var d models.Alumno
-
+	var d models.Trabajo
+	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -53,15 +38,32 @@ func AlumnoCreate(c *gin.Context) {
 	}
 	conn.Create(&d)
 	c.JSON(http.StatusOK, &d)
-
 }
 
-func AlumnoUpdate(c *gin.Context) {
+func TrabajoGet(c *gin.Context) {
+
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
+
 	id := c.Param("id")
-	var d models.Alumno
+	var d models.Trabajo
+	if err := conn.First(&d, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, &d)
+}
+
+func TrabajoUpdate(c *gin.Context) {
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)
+
+	id := c.Param("id")
+	var d models.Trabajo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -71,15 +73,15 @@ func AlumnoUpdate(c *gin.Context) {
 	c.BindJSON(&d)
 	conn.Save(&d)
 	c.JSON(http.StatusOK, &d)
-
 }
 
-func AlumnoDelete(c *gin.Context) {
+func TrabajoDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
+
 	id := c.Param("id")
-	var d models.Alumno
+	var d models.Trabajo
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

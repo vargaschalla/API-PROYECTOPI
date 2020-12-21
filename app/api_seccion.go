@@ -9,13 +9,13 @@ import (
 )
 
 func SeccionIndex(c *gin.Context) {
-	var lis []models.Seccion
-
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.Seccion{}
 	conn.Find(&lis)
+	conn.Preload("Seccion").Preload("Periodo").Preload("Curso").Preload("Persona").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,

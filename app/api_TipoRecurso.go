@@ -8,13 +8,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func CategoriaCursoIndex(c *gin.Context) {
-	var lis []models.CategoriaCurso
-
+func TipoRecursoIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.TipoRecurso{}
+	conn.Preload("Nivel").Find(&lis)
 	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
@@ -23,12 +23,12 @@ func CategoriaCursoIndex(c *gin.Context) {
 
 }
 
-func CategoriaCursoCreate(c *gin.Context) {
+func TipoRecursoCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.CategoriaCurso
+	var d models.TipoRecurso
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -40,14 +40,14 @@ func CategoriaCursoCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func CategoriaCursoGet(c *gin.Context) {
+func TipoRecursoGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.CategoriaCurso
+	var d models.TipoRecurso
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -57,13 +57,13 @@ func CategoriaCursoGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func CategoriaCursoUpdate(c *gin.Context) {
+func TipoRecursoUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.CategoriaCurso
+	var d models.TipoRecurso
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -75,13 +75,13 @@ func CategoriaCursoUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func CategoriaCursoDelete(c *gin.Context) {
+func TipoRecursoDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.CategoriaCurso
+	var d models.TipoRecurso
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

@@ -8,13 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func GradoIndex(c *gin.Context) {
+//CRUD for items table
+func PeriodoIndex(c *gin.Context) {
+	var lis []models.Periodo
+
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	lis := []models.Grado{}
-	conn.Preload("Nivel").Find(&lis)
 	conn.Find(&lis)
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
@@ -23,12 +24,12 @@ func GradoIndex(c *gin.Context) {
 
 }
 
-func GradoCreate(c *gin.Context) {
+func PeriodoCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.Grado
+	var d models.Periodo
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -40,14 +41,14 @@ func GradoCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func GradoGet(c *gin.Context) {
+func PeriodoGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Grado
+	var d models.Periodo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -57,13 +58,13 @@ func GradoGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func GradoUpdate(c *gin.Context) {
+func PeriodoUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Grado
+	var d models.Periodo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -75,13 +76,13 @@ func GradoUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func GradoDelete(c *gin.Context) {
+func PeriodoDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Grado
+	var d models.Periodo
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
