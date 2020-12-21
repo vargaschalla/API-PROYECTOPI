@@ -8,12 +8,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func SetupRouter() *gin.Engine {
 
-	conn, err := connectDBmysql()
+	conn, err := connectDB()
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 		//return
@@ -149,6 +150,18 @@ func connectDBmysql() (c *gorm.DB, err error) {
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 	}
+
+	return conn, err
+}
+
+func connectDB() (c *gorm.DB, err error) {
+	////dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "docker:docker@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	dsn := "user=wtsraexyfllzlj password=21bc9dcd59ddb8b14005d8bb0a535ef8d818293a55263f51e53e68cc831bb320 host=ec2-34-237-166-54.compute-1.amazonaws.com dbname=d7gjil23228635 port=5432 sslmode=require TimeZone=Asia/Shanghai"
+	//dsn := "user=postgres password=postgres2 dbname=users_test host=localhost port=5435 sslmode=disable TimeZone=Asia/Shanghai"
+	conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	return conn, err
 }
