@@ -9,13 +9,13 @@ import (
 )
 
 func SesionIndex(c *gin.Context) {
-	var lis []models.Sesiones
-
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.Sesiones{}
 	conn.Find(&lis)
+	conn.Preload("Seccion").Preload("Academic_Plane").Preload("Academic_Period").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,

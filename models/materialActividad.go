@@ -1,17 +1,12 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
-type Academic_Period struct {
+type MaterialActividad struct {
 	gorm.Model
 	Descripcion     string `json:"descripcion"`
+	Tipo            string `json:"tipo"`
 	Estado          string `json:"estado"`
-	Sesiones        []Sesiones
 	SesionMaterial  []SesionMaterial
-	Academic_Plane  []Academic_Plane
-	Modulo          []Modulo
 	SesionActividad []SesionActividad
-	CargaAcademica  []CargaAcademica
 }

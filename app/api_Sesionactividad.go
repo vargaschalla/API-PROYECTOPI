@@ -8,14 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func TareaIndex(c *gin.Context) {
-	var lis []models.Tareas
-
+func SesionActividadIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.SesionActividad{}
 	conn.Find(&lis)
+	conn.Preload("Alumno").Preload("MaterialActividad").Preload("Sesiones").Preload("Seccion").
+		Preload("Academic_Period").Preload("Academic_Plane").Preload("SesionMaterial").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -23,12 +24,12 @@ func TareaIndex(c *gin.Context) {
 
 }
 
-func TareaCreate(c *gin.Context) {
+func SesionActividadCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.Tareas
+	var d models.SesionActividad
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -40,14 +41,14 @@ func TareaCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func TareaGet(c *gin.Context) {
+func SesionActividadGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Tareas
+	var d models.SesionActividad
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -57,13 +58,13 @@ func TareaGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func TareaUpdate(c *gin.Context) {
+func SesionActividadUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Tareas
+	var d models.SesionActividad
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -75,13 +76,13 @@ func TareaUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func TareaDelete(c *gin.Context) {
+func SesionActividadDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Tareas
+	var d models.SesionActividad
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

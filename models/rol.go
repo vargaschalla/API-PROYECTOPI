@@ -6,8 +6,8 @@ import (
 
 type Rol struct {
 	gorm.Model
-	Nombre  string `json:"nombre"`
-	Alumno  []Alumno
-	Docente []Docente
-	Estado  string `json:"estado"`
+	Descripcion string `json:"descripcion"`
+	Alumno      []Alumno
+	Docente     []Docente
+	Estado      string `json:"estado"`
 }

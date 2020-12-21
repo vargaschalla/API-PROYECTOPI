@@ -24,13 +24,20 @@ func SetupRouter() *gin.Engine {
 		&models.User{},
 		&models.Rol{},
 		&models.Sesiones{},
-		&models.Tareas{},
+		&models.SesionActividad{},
 		&models.Nivel{},
 		&models.Grado{},
+		&models.Curso{},
 		&models.Alumno{},
 		&models.Docente{},
 		&models.Academic_Period{},
 		&models.Academic_Plane{},
+		&models.SesionMaterial{},
+		&models.Seccion{},
+		&models.MaterialActividad{},
+		&models.CargaAcademica{},
+		&models.CategoriaCurso{},
+		&models.Modulo{},
 	)
 
 	r := gin.Default()
@@ -72,11 +79,11 @@ func SetupRouter() *gin.Engine {
 		v1.PUT("/sesiones/:id", app.SesionUpdate)
 		v1.DELETE("/sesiones/:id", app.SesionDelete)
 
-		v1.GET("/tareas", app.TareaIndex)
-		v1.POST("/tareas", authMiddleWare(), app.TareaCreate)
-		v1.GET("/tareas/:id", app.TareaGet)
-		v1.PUT("/tareas/:id", app.TareaUpdate)
-		v1.DELETE("/tareas/:id", app.TareaDelete)
+		v1.GET("/sesionmaterial", app.SesionMaterialIndex)
+		v1.POST("/sesionmaterial", authMiddleWare(), app.SesionMaterialCreate)
+		v1.GET("/sesionmaterial/:id", app.SesionMaterialGet)
+		v1.PUT("/sesionmaterial/:id", app.SesionMaterialUpdate)
+		v1.DELETE("/sesionmaterial/:id", app.SesionMaterialDelete)
 
 		v1.GET("/nivel", app.NivelIndex)
 		v1.POST("/nivel", authMiddleWare(), app.NivelCreate)
@@ -102,17 +109,59 @@ func SetupRouter() *gin.Engine {
 		v1.PUT("/docente/:id", app.DocenteUpdate)
 		v1.DELETE("/docente/:id", app.DocenteDelete)
 
-		v1.GET("/academicperiod", apis.AcademicPeriodIndex)
-		v1.POST("/academicperiod", authMiddleWare(), apis.AcademicPeriodCreate)
-		v1.GET("/academicperiod/:id", apis.AcademicPeriodGet)
-		v1.PUT("/academicperiod/:id", apis.AcademicPeriodUpdate)
-		v1.DELETE("/academicperiod/:id", apis.AcademicPeriodDelete)
+		v1.GET("/curso", app.CursoIndex)
+		v1.GET("/curso/:id", app.CursoGet)
+		v1.POST("/curso", authMiddleWare(), app.CursoCreate)
+		v1.PUT("/curso/:id", app.CursoUpdate)
+		v1.DELETE("/curso/:id", app.CursoDelete)
 
-		v1.GET("/academicplan", apis.AcademicPlanIndex)
-		v1.POST("/academicplan", authMiddleWare(), apis.AcademicPlanCreate)
-		v1.GET("/academicplan/:id", apis.AcademicPlanGet)
-		v1.PUT("/academicplan/:id", apis.AcademicPlanUpdate)
-		v1.DELETE("/academicplan/:id", apis.AcademicPlanDelete)
+		v1.GET("/academicperiod", app.AcademicPeriodIndex)
+		v1.POST("/academicperiod", authMiddleWare(), app.AcademicPeriodCreate)
+		v1.GET("/academicperiod/:id", app.AcademicPeriodGet)
+		v1.PUT("/academicperiod/:id", app.AcademicPeriodUpdate)
+		v1.DELETE("/academicperiod/:id", app.AcademicPeriodDelete)
+
+		v1.GET("/academicplan", app.AcademicPlanIndex)
+		v1.POST("/academicplan", authMiddleWare(), app.AcademicPlanCreate)
+		v1.GET("/academicplan/:id", app.AcademicPlanGet)
+		v1.PUT("/academicplan/:id", app.AcademicPlanUpdate)
+		v1.DELETE("/academicplan/:id", app.AcademicPlanDelete)
+
+		v1.GET("/seccion", app.SeccionIndex)
+		v1.POST("/seccion", authMiddleWare(), app.SeccionCreate)
+		v1.GET("/seccion/:id", app.SeccionGet)
+		v1.PUT("/seccion/:id", app.SeccionUpdate)
+		v1.DELETE("/seccion/:id", app.SeccionDelete)
+
+		v1.GET("/modulo", app.ModuloIndex)
+		v1.POST("/modulo", authMiddleWare(), app.ModuloCreate)
+		v1.GET("/modulo/:id", app.ModuloGet)
+		v1.PUT("/modulo/:id", app.ModuloUpdate)
+		v1.DELETE("/modulo/:id", app.ModuloDelete)
+
+		v1.GET("/materialactividad", app.MaterialActividadIndex)
+		v1.POST("/materialactividad", authMiddleWare(), app.MaterialActividadCreate)
+		v1.GET("/materialactividad/:id", app.MaterialActividadGet)
+		v1.PUT("/materialactividad/:id", app.MaterialActividadUpdate)
+		v1.DELETE("/materialactividad/:id", app.MaterialActividadDelete)
+
+		v1.GET("/sesionactividad", app.SesionActividadIndex)
+		v1.POST("/sesionactividad", authMiddleWare(), app.SesionActividadCreate)
+		v1.GET("/sesionactividad/:id", app.SesionActividadGet)
+		v1.PUT("/sesionactividad/:id", app.SesionActividadUpdate)
+		v1.DELETE("/sesionactividad/:id", app.SesionActividadDelete)
+
+		v1.GET("/categoriacurso", app.CategoriaCursoCreate)
+		v1.POST("/categoriacurso", authMiddleWare(), app.CategoriaCursoCreate)
+		v1.GET("/categoriacurso/:id", app.CategoriaCursoGet)
+		v1.PUT("/categoriacurso/:id", app.CategoriaCursoUpdate)
+		v1.DELETE("/categoriacurso/:id", app.CategoriaCursoDelete)
+
+		v1.GET("/cargaAcademica", app.CargaAcademicaIndex)
+		v1.POST("/cargaAcademica", authMiddleWare(), app.CargaAcademicaCreate)
+		v1.GET("/cargaAcademica/:id", app.CargaAcademicaGETID)
+		v1.PUT("/cargaAcademica/:id", app.CargaAcademicaUpdate)
+		v1.DELETE("/cargaAcademica/:id", app.CargaAcademicaDelete)
 	}
 
 	return r

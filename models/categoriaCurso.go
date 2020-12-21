@@ -2,9 +2,9 @@ package models
 
 import "gorm.io/gorm"
 
-type Nivel struct {
+type CategoriaCurso struct {
 	gorm.Model
 	Descripcion string `json:"descripcion"`
-	Grado       []Grado
 	Estado      string `json:"estado"`
+	Curso       []Curso
 }

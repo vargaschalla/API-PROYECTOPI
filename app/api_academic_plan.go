@@ -1,8 +1,7 @@
-package apis
+package app
 
 import (
 	"net/http"
-	"strconv"
 
 	"PROYECTintegrador/ProyectoGOI/models"
 
@@ -15,13 +14,13 @@ const layout = "2006-Jan-02"
 
 //CRUD for items table
 func AcademicPlanIndex(c *gin.Context) {
-	var lis []models.Academic_Plane
-
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.Academic_Plane{}
 	conn.Find(&lis)
+	conn.Preload("Grado").Preload("Academic_Period").Preload("Curso").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -75,12 +74,6 @@ func AcademicPlanUpdate(c *gin.Context) {
 		})
 		return
 	}
-	d.NAME = c.PostForm("name")
-	d.FECHA = c.PostForm("fecha")
-	d.CURSO_ID, _ = strconv.Atoi(c.PostForm("curso_id"))
-	d.LEVEL_ID, _ = strconv.Atoi(c.PostForm("level_id"))
-	d.STATUS = c.PostForm("status")
-
 	c.BindJSON(&d)
 	conn.Save(&d)
 	c.JSON(http.StatusOK, &d)

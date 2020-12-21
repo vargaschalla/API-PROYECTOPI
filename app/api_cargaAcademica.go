@@ -8,15 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-//CRUD for items table
-func AcademicPeriodIndex(c *gin.Context) {
-	var lis []models.Academic_Period
-
+func CargaAcademicaIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.CargaAcademica{}
 	conn.Find(&lis)
+	conn.Preload("Academic_Plane").Preload("Academic_Period").Preload("Alumno").Preload("Seccion").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -24,13 +23,28 @@ func AcademicPeriodIndex(c *gin.Context) {
 
 }
 
-func AcademicPeriodCreate(c *gin.Context) {
+func CargaAcademicaGETID(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
+	id := c.Param("id")
+	var d models.CargaAcademica
+	if err := conn.First(&d, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, &d)
 
-	var d models.Academic_Period
-	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
+}
+
+func CargaAcademicaCreate(c *gin.Context) {
+	db, _ := c.Get("db")
+
+	conn := db.(gorm.DB)
+	var d models.CargaAcademica
+
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -39,32 +53,15 @@ func AcademicPeriodCreate(c *gin.Context) {
 	}
 	conn.Create(&d)
 	c.JSON(http.StatusOK, &d)
+
 }
 
-func AcademicPeriodGet(c *gin.Context) {
-
+func CargaAcademicaUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
-
 	id := c.Param("id")
-	var d models.Academic_Period
-	if err := conn.First(&d, id).Error; err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, &d)
-}
-
-func AcademicPeriodUpdate(c *gin.Context) {
-	db, _ := c.Get("db")
-
-	conn := db.(gorm.DB)
-
-	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.CargaAcademica
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -74,15 +71,15 @@ func AcademicPeriodUpdate(c *gin.Context) {
 	c.BindJSON(&d)
 	conn.Save(&d)
 	c.JSON(http.StatusOK, &d)
+
 }
 
-func AcademicPeriodDelete(c *gin.Context) {
+func CargaAcademicaDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
-
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.CargaAcademica
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

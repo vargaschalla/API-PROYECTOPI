@@ -8,15 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-//CRUD for items table
-func AcademicPeriodIndex(c *gin.Context) {
-	var lis []models.Academic_Period
-
+func ModuloIndex(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
+	lis := []models.Modulo{}
 	conn.Find(&lis)
+	conn.Preload("Academic_Period").Preload("Academic_Plane").Find(&lis) // Preload("Alumno") carga los objetos Alumno relacionado
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "thank you",
 		"r":   lis,
@@ -24,12 +23,12 @@ func AcademicPeriodIndex(c *gin.Context) {
 
 }
 
-func AcademicPeriodCreate(c *gin.Context) {
+func ModuloCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.Academic_Period
+	var d models.Modulo
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -41,14 +40,14 @@ func AcademicPeriodCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodGet(c *gin.Context) {
+func ModuloGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Modulo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -58,13 +57,13 @@ func AcademicPeriodGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodUpdate(c *gin.Context) {
+func ModuloUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Modulo
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -76,13 +75,13 @@ func AcademicPeriodUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodDelete(c *gin.Context) {
+func ModuloDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Modulo
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

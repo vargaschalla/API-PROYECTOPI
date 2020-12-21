@@ -8,9 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
-//CRUD for items table
-func AcademicPeriodIndex(c *gin.Context) {
-	var lis []models.Academic_Period
+func SeccionIndex(c *gin.Context) {
+	var lis []models.Seccion
 
 	db, _ := c.Get("db")
 
@@ -24,12 +23,12 @@ func AcademicPeriodIndex(c *gin.Context) {
 
 }
 
-func AcademicPeriodCreate(c *gin.Context) {
+func SeccionCreate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
-	var d models.Academic_Period
+	var d models.Seccion
 	//d := models.Person{Name: c.PostForm("name"), Age: c.PostForm("age")}
 	if err := c.BindJSON(&d); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -41,14 +40,14 @@ func AcademicPeriodCreate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodGet(c *gin.Context) {
+func SeccionGet(c *gin.Context) {
 
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Seccion
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -58,13 +57,13 @@ func AcademicPeriodGet(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodUpdate(c *gin.Context) {
+func SeccionUpdate(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Seccion
 	if err := conn.First(&d, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -76,13 +75,13 @@ func AcademicPeriodUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, &d)
 }
 
-func AcademicPeriodDelete(c *gin.Context) {
+func SeccionDelete(c *gin.Context) {
 	db, _ := c.Get("db")
 
 	conn := db.(gorm.DB)
 
 	id := c.Param("id")
-	var d models.Academic_Period
+	var d models.Seccion
 
 	if err := conn.Where("id = ?", id).First(&d).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
